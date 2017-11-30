@@ -5,6 +5,18 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TacoOnlineBistro", "TacoOnlineBistro\TacoOnlineBistro.csproj", "{73437868-5737-442A-AEFD-D56AC7A3400B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1AF7302F-754C-4938-8482-CA82BFA9448D}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\StructureCreation.sql = ..\..\..\StructureCreation.sql
+		..\..\..\StructureInsertData.sql = ..\..\..\StructureInsertData.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TacoBistro", "TacoBistro\TacoBistro.csproj", "{4E04B426-46A7-41F2-B576-745BE8D5DD10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TacoBistro.Models", "TacoBistro.Models\TacoBistro.Models.csproj", "{0C35031B-5D24-4C85-AFAA-BA50267A0CA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TacoBistro.Repository", "TacoBistro.Repository\TacoBistro.Repository.csproj", "{923B4139-604A-4E08-A9BB-8183BF255E20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +27,18 @@ Global
 		{73437868-5737-442A-AEFD-D56AC7A3400B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73437868-5737-442A-AEFD-D56AC7A3400B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73437868-5737-442A-AEFD-D56AC7A3400B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E04B426-46A7-41F2-B576-745BE8D5DD10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E04B426-46A7-41F2-B576-745BE8D5DD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E04B426-46A7-41F2-B576-745BE8D5DD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E04B426-46A7-41F2-B576-745BE8D5DD10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C35031B-5D24-4C85-AFAA-BA50267A0CA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C35031B-5D24-4C85-AFAA-BA50267A0CA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C35031B-5D24-4C85-AFAA-BA50267A0CA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C35031B-5D24-4C85-AFAA-BA50267A0CA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{923B4139-604A-4E08-A9BB-8183BF255E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{923B4139-604A-4E08-A9BB-8183BF255E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{923B4139-604A-4E08-A9BB-8183BF255E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{923B4139-604A-4E08-A9BB-8183BF255E20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

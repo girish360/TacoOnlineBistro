@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TacoOnlineBistro.Models
+namespace TacoBistro.Models
 {
-    public class UserModel
+    public class User
     {
         #region Properties
         public Guid UserId { get; set; }

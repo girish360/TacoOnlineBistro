@@ -48,5 +48,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TacoBistro.Models\TacoBistro.Models.csproj">
+      <Project>{0c35031b-5d24-4c85-afaa-ba50267a0ca9}</Project>
+      <Name>TacoBistro.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TacoBistro.Repository\TacoBistro.Repository.csproj">
+      <Project>{923b4139-604a-4e08-a9bb-8183bf255e20}</Project>
+      <Name>TacoBistro.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,53 +5,34 @@ using System.Text;
 using System.Threading.Tasks;
 using TacoBistro.Models;
 using System.Data.SqlClient;
+using TacoBistro.Repository.Core;
+using System.Configuration;
+
 
 namespace TacoBistro.Repository
 {
-    public class ProductRepository
+    public class ProductRepository : BaseRepository<Product>
     {
         #region Methods
         public List<Product> ReadAll()
         {
-            List<Product> Products = new List<Product>();
-
-            string connectionString = "Server=(local);Database=TacoBistro;Trusted_Connection=True;";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    using (SqlCommand command = new SqlCommand())
-                    {
-                        command.Connection = connection;
-                        command.CommandText = "dbo.Products_ReadAll";
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        connection.Open();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Product product = new Product();
-                                product.ProductId = reader.GetGuid(reader.GetOrdinal("ProductId"));
-                                product.CategoryId = reader.GetGuid(reader.GetOrdinal("CategId"));
-                                product.ProductName = reader.GetString(reader.GetOrdinal("ProductName"));
-                                product.Description = reader.GetString(reader.GetOrdinal("Description"));
-                                product.Price = reader.GetDecimal(reader.GetOrdinal("Price"));
-                                Products.Add(product);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("There was an error: {0}", ex.ToString());
-                }
-
-            }
-            return Products;
+            return ReadAll("dbo.Products_ReadAll");
         }
 
+        protected override Product GetModelFromReader(SqlDataReader reader)
+        {
+            Product Product = new Product();
+            Product.ProductId = reader.GetGuid(reader.GetOrdinal("ProductId"));
+            Product.CategoryId = reader.GetGuid(reader.GetOrdinal("CategId"));
+            Product.ProductName = reader.GetString(reader.GetOrdinal("ProductName"));
+            Product.Description = reader.GetString(reader.GetOrdinal("Description"));
+            Product.Price = reader.GetDecimal(reader.GetOrdinal("Price"));
+            
+            return Product;
+        }
+
+
+        /*
         public void Insert(Product product)
         {
             string connectionString = "Server=(local);Database=TacoBistro;Trusted_Connection=True;";
@@ -169,6 +150,7 @@ namespace TacoBistro.Repository
                 }
             }
         }
+        */
         #endregion
     }
 }

@@ -5,49 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using TacoBistro.Models;
 using System.Data.SqlClient;
+using TacoBistro.Repository.Core;
 
 namespace TacoBistro.Repository
 {
-    public class CategoryRepository
+    public class CategoryRepository : BaseRepository<Category>
     {
         #region Methods
         public List<Category> ReadAll()
         {
-            List<Category> Categories = new List<Category>();
+            return ReadAll("dbo.Categories_ReadAll");
+        }
 
-            string connectionString = "Server=(local);Database=TacoBistro;Trusted_Connection=True;";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    using (SqlCommand command = new SqlCommand())
-                    {
-                        command.Connection = connection;
-                        command.CommandText = "dbo.Categories_ReadAll";
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        connection.Open();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Category category = new Category();
-                                category.CategoryId = reader.GetGuid(reader.GetOrdinal("CategId"));
-                                category.CategoryName = reader.GetString(reader.GetOrdinal("Category"));
-
-                                Categories.Add(category);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("There was an error: {0}", ex.ToString());
-                }
-
-            }
-            return Categories;
+        protected override Category GetModelFromReader(SqlDataReader reader)
+        {
+            Category category = new Category();
+            category.CategoryId = reader.GetGuid(reader.GetOrdinal("CategId"));
+            category.CategoryName = reader.GetString(reader.GetOrdinal("Category"));
+            
+            return category;
         }
 
         public void Insert(Category category)

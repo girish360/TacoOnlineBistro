@@ -5,52 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using TacoBistro.Models;
 using System.Data.SqlClient;
+using TacoBistro.Repository.Core;
 
 namespace TacoBistro.Repository
 {
-    public class OrderRepository
+    public class OrderRepository : BaseRepository<Order>
     {
         #region Methods
         public List<Order> ReadAll()
         {
-            List<Order> Orders = new List<Order>();
-            string connectionString = "Server=(local);Database=TacoBistro;Trusted_Connection=True;";
+            return ReadAll("dbo.Orders_ReadAll");
+        }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    using (SqlCommand command = new SqlCommand())
-                    {
-                        command.Connection = connection;
-                        command.CommandText = "dbo.Orders_ReadAll";
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        connection.Open();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Order order = new Order();
-                                order.OrderId = reader.GetGuid(reader.GetOrdinal("OrderId"));
-                                order.UserId = reader.GetGuid(reader.GetOrdinal("UserId"));
-                                order.TotalAmount = reader.GetDecimal(reader.GetOrdinal("TotalAmount"));
-                                order.DeliveryAdress = reader.GetString(reader.GetOrdinal("DeliveryAdress"));
-                                order.Comments = reader.GetString(reader.GetOrdinal("Comments"));
-                                order.DeliveryStatus = reader.GetBoolean(reader.GetOrdinal("DeliveryStatus"));
-                                order.OrderDate = reader.GetDateTime(reader.GetOrdinal("OrderDate"));
-                                Orders.Add(order);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("There was an error: {0}", ex.ToString());
-                }
-
-            }
-            return Orders;
+        protected override Order GetModelFromReader(SqlDataReader reader)
+        {
+            Order order = new Order();
+            order.OrderId = reader.GetGuid(reader.GetOrdinal("OrderId"));
+            order.UserId = reader.GetGuid(reader.GetOrdinal("UserId"));
+            order.TotalAmount = reader.GetDecimal(reader.GetOrdinal("TotalAmount"));
+            order.DeliveryAdress = reader.GetString(reader.GetOrdinal("DeliveryAdress"));
+            order.Comments = reader.GetString(reader.GetOrdinal("Comments"));
+            order.DeliveryStatus = reader.GetBoolean(reader.GetOrdinal("DeliveryStatus"));
+            order.OrderDate = reader.GetDateTime(reader.GetOrdinal("OrderDate"));
+            return order;
         }
 
         public void Insert(Order order)

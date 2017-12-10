@@ -5,50 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using TacoBistro.Models;
 using System.Data.SqlClient;
+using TacoBistro.Repository.Core;
 
 namespace TacoBistro.Repository
 {
-    public class CommentRepository
+    public class CommentRepository : BaseRepository<Comment>
     {
         #region Methods
         public List<Comment> ReadAll()
         {
-            List<Comment> Comments = new List<Comment>();
-            string connectionString = "Server=(local);Database=TacoBistro;Trusted_Connection=True;";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    using (SqlCommand command = new SqlCommand())
-                    {
-                        command.Connection = connection;
-                        command.CommandText = "dbo.Comments_ReadAll";
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        connection.Open();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Comment comment = new Comment();
-                                comment.CommentId = reader.GetGuid(reader.GetOrdinal("CommentId"));
-                                comment.UserId = reader.GetGuid(reader.GetOrdinal("UserId"));
-                                comment.Message = reader.GetString(reader.GetOrdinal("Message"));
-
-                                Comments.Add(comment);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("There was an error: {0}", ex.ToString());
-                }
-
-            }
-            return Comments;
+            return ReadAll("dbo.Comments_ReadAll");
         }
+
+        protected override Comment GetModelFromReader(SqlDataReader reader)
+        {
+            Comment comment = new Comment();
+            comment.CommentId = reader.GetGuid(reader.GetOrdinal("CommentId"));
+            comment.UserId = reader.GetGuid(reader.GetOrdinal("UserId"));
+            comment.Message = reader.GetString(reader.GetOrdinal("Message"));
+            
+            return comment;
+        }
+
 
         public void Insert(Comment comment)
         {

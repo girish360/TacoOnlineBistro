@@ -5,51 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using TacoBistro.Models;
 using System.Data.SqlClient;
+using TacoBistro.Repository.Core;
 
 namespace TacoBistro.Repository
 {
-    public class OrderItemRepository
+    public class OrderItemRepository : BaseRepository<OrderItem>
     {
         #region Methods
         public List<OrderItem> ReadAll()
         {
-            List<OrderItem> OrderItems = new List<OrderItem>();
-            string connectionString = "Server=(local);Database=TacoBistro;Trusted_Connection=True;";
+            return ReadAll("dbo.OrderItem_ReadAll");
+        }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    using (SqlCommand command = new SqlCommand())
-                    {
-                        command.Connection = connection;
-                        command.CommandText = "dbo.OrderItem_ReadAll";
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        connection.Open();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                OrderItem orderItem = new OrderItem();
-                                orderItem.OrderItemId = reader.GetGuid(reader.GetOrdinal("OrderItemId"));
-                                orderItem.OrderId = reader.GetGuid(reader.GetOrdinal("OrderId"));
-                                orderItem.ProductId = reader.GetGuid(reader.GetOrdinal("ProductId"));
-                                orderItem.UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice"));
-                                orderItem.Quantity = reader.GetDecimal(reader.GetOrdinal("Quantity"));
-
-                                OrderItems.Add(orderItem);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("There was an error: {0}", ex.ToString());
-                }
-
-            }
-            return OrderItems;
+        protected override OrderItem GetModelFromReader(SqlDataReader reader)
+        {
+            OrderItem orderitem = new OrderItem();
+            orderitem.OrderItemId = reader.GetGuid(reader.GetOrdinal("OrderItemId"));
+            orderitem.OrderId = reader.GetGuid(reader.GetOrdinal("OrderId"));
+            orderitem.ProductId = reader.GetGuid(reader.GetOrdinal("ProductId"));
+            orderitem.UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice"));
+            orderitem.Quantity = reader.GetDecimal(reader.GetOrdinal("Quantity"));
+           
+            return orderitem;
         }
 
         public void Insert(OrderItem orderItem)
